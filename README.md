@@ -1,6 +1,6 @@
 # sfdc-generate-package-metadata-generator
 
-Generate metadata.js file for sfdc-generate-package package from all available Salesforce APIs by using Salesforce SOAP Metadata API<br /><br />
+Generate metadata.js file for [sfdc-generate-package](https://github.com/scolladon/sfdc-generate-package) package from all available Salesforce APIs by using Salesforce SOAP Metadata API<br /><br />
 Could be also useful for just listing all Salesforce metadata directories
 
 ## Getting Started
