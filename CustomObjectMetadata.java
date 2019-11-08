@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,10 @@ public class CustomObjectMetadata {
 	}};
 
 	//manually add children that for some reason are not retrieved by the api
-	private static final Map<String, String> apiMissingChildren = new HashMap<String, String>() {{
-		put("SharingRules", "sharingTerritoryRules");
-		put("CustomObject", "NamedFilter");
+	private static final Map<String, List<String>> apiMissingChildren = new HashMap<String, List<String>>() {{
+		put("SharingRules", new ArrayList<String>(Arrays.asList("sharingTerritoryRules")));
+		put("CustomObject", new ArrayList<String>(Arrays.asList("NamedFilter")));
+		put("Workflow", new ArrayList<String>(Arrays.asList("WorkflowEmailRecipient", "WorkflowTimeTrigger", "WorkflowActionReference")));
 	}};
 
 	private static final Map<String, String> customChildren = new HashMap<String, String>() {{
@@ -34,7 +36,8 @@ public class CustomObjectMetadata {
 		put("Index", "indexes");
 		put("WorkflowKnowledgePublish", "knowledgePublishes");
 	}};
-
+	
+	
 	public CustomObjectMetadata(DescribeMetadataObject describeMetadataObject, Double minApiVersion,
 			Double maxApiVersion) {
 		xmlName = describeMetadataObject.getXmlName();
@@ -54,7 +57,7 @@ public class CustomObjectMetadata {
 			}
 
 			if (apiMissingChildren.containsKey(xmlName)) {
-				childNames.add(apiMissingChildren.get(xmlName));
+				childNames.addAll(apiMissingChildren.get(xmlName));
 			}
 
 			NormalChildren normalChildren = new NormalChildren();
@@ -81,4 +84,12 @@ public class CustomObjectMetadata {
 			}
 		}
 	}
+	
+	// this CTOR handles missing api directories
+	public CustomObjectMetadata(String xmlName, Double minApiVersion, Double maxApiVersion) {
+		this.xmlName = xmlName;
+		this.minApiVersion = minApiVersion;
+		this.maxApiVersion = maxApiVersion;
+	}
+	
 }

@@ -9,10 +9,9 @@ import com.sforce.ws.ConnectorConfig;
 // From https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_quickstart_java_sample.htm
 public class MetadataLoginUtil {
     static final String USERNAME = "username";
-    static final String PASSWORD = "<password><token>";
     
     public static MetadataConnection login() throws ConnectionException {
-        final String URL = "https://login.salesforce.com/services/Soap/c/46.0";
+        final String URL = "https://login.salesforce.com/services/Soap/c/47.0";
         final LoginResult loginResult = loginToSalesforce(USERNAME, PASSWORD, URL);
         return createMetadataConnection(loginResult);
     }

@@ -88,6 +88,5 @@ public class MetadataCollector {
     		assert firstSuffix.equals(secondSuffix) : "Suffix between versions of " + name + " was changed: first: " + firstSuffix + ", second: " + secondSuffix;
     	}
     	//child names are always overwritten by the latest API
-    	//assert Arrays.equals(first.getChildXmlNames(), second.getChildXmlNames()) : "Child list between versions of " + name + " was changed:\n" + first.toString() + "\nsecond: " + second.toString();
     }
 }

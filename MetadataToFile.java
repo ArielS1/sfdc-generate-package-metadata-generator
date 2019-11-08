@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class MetadataToFile {
 	private static String generateJson(Map<String, List<Map<Double, DescribeMetadataObject>>> versionedMetadataObjects) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	    Map<String, CustomObjectMetadata> jsonStructure = new HashMap<String, CustomObjectMetadata>();
+	    Double[] highestApiVersion = new Double[] {0.0};
 	    
 		versionedMetadataObjects.forEach((xmlName, versionsList) -> {
 			DescribeMetadataObject latestDescribeMetadataObject = null;
@@ -46,7 +48,25 @@ public class MetadataToFile {
 		    }
 		    
 		    jsonStructure.put(latestDescribeMetadataObject.getDirectoryName(), metadataObject);
+		    if(maxApiVersion > highestApiVersion[0]) {
+		    	highestApiVersion[0] = maxApiVersion;
+		    }
 		});
+		
+
+		// handle directories that for some reason are not returned in the api
+		new ArrayList<String[]>() {{
+			add(new String[] {"translations", "Translations"});
+			add(new String[] {"portals", "Portal"});
+			add(new String[] {"networks", "Network"});
+			add(new String[] {"topicsforobjects", "TopicsForObjects"});
+		}}.forEach(xmlObject -> {
+			String directory = xmlObject[0];
+			if(!jsonStructure.containsKey(directory)) {
+				jsonStructure.put(directory, new CustomObjectMetadata(xmlObject[1], 3.0, highestApiVersion[0]));
+			}
+		});
+
 		
 	    return gson.toJson(jsonStructure);
 	}
